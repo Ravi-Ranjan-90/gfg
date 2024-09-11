@@ -4,41 +4,75 @@ using namespace std;
 
 // } Driver Code Ends
 class Solution {
+    // using BFS
+//     public:
+//   bool detect(int src, int visited[], int parent[], vector<int> adj[]){
+//       queue<int> q;
+//       q.push(src);
+//       parent[src]=-1;
+//       visited[src]=1;
+//       while(!q.empty()){
+//           int front=q.front();
+//           q.pop();
+//           for(auto i:adj[front]){
+//               if(!visited[i]){
+//                   visited[i]=1;
+//                   parent[i]=front;
+//                   q.push(i);
+//               }
+//               else if(parent[front]!=i){
+//                   return true;
+//               }
+//           }
+//       }
+//       return false;
+//   }
+//     // Function to detect cycle in an undirected graph.
+//     bool isCycle(int V, vector<int> adj[]) {
+//         // Code here
+//         int visited[V]={0};
+//         int parent[V]={-1};
+//             for(int i=0;i<V;i++){
+//                 if(visited[i]==0){
+//                     if(detect(i,visited, parent,adj)){
+//                         return true;
+//                     }
+//                 }
+//             }
+//             return false;
+//     }
+
+// Using DFS
   public:
-  bool detect(int src, int visited[], int parent[], vector<int> adj[]){
-      queue<int> q;
-      q.push(src);
-      parent[src]=-1;
-      visited[src]=1;
-      while(!q.empty()){
-          int front=q.front();
-          q.pop();
-          for(auto i:adj[front]){
-              if(!visited[i]){
-                  visited[i]=1;
-                  parent[i]=front;
-                  q.push(i);
-              }
-              else if(parent[front]!=i){
-                  return true;
-              }
-          }
-      }
-      return false;
-  }
     // Function to detect cycle in an undirected graph.
-    bool isCycle(int V, vector<int> adj[]) {
-        // Code here
-        int visited[V]={0};
-        int parent[V]={-1};
-            for(int i=0;i<V;i++){
-                if(visited[i]==0){
-                    if(detect(i,visited, parent,adj)){
-                        return true;
-                    }
+    bool check(int src,vector<int> adj[], int vis[], int parent[]){
+        vis[src]=1;
+        for(auto i:adj[src]){
+            if(!vis[i]){
+                parent[i]=src;
+                if(check(i,adj,vis,parent)){
+                    return true;
                 }
             }
-            return false;
+            else if(parent[src]!=i){
+                return true;
+            }
+        }
+        return false;
+    }
+    bool isCycle(int V, vector<int> adj[]) {
+        // Code here
+        int vis[V]={0};
+        int parent[V]={-1};
+        for(int i=0;i<V;i++){
+            if(!vis[i]){
+                parent[i]=-1;
+                if(check(i,adj,vis,parent)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 };
 
